@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -12,28 +13,47 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 public class DrivetrainSubsystem extends SubsystemBase {
   /** Creates a new DrivetrainSubsystem. */
 
   //motor declaration
-  private MotorController m_frontLeft = new Talon(Constants.MotorConstants.kDriveFrontLeft);
-  private MotorController m_frontRight = new Talon(Constants.MotorConstants.kDriveFrontRight);
-  private MotorController m_backLeft = new Talon(Constants.MotorConstants.kDriveBackLeft);
-  private MotorController m_backRight = new Talon(Constants.MotorConstants.kDriveBackRight);
+  private TalonSRXController m_frontLeft = new TalonSRXController(new TalonSRX(Constants.MotorConstants.kDriveFrontLeft));
+  private TalonSRXController m_frontRight = new TalonSRXController(new TalonSRX(Constants.MotorConstants.kDriveFrontRight));
+  private TalonSRXController m_backLeft = new TalonSRXController(new TalonSRX(Constants.MotorConstants.kDriveBackLeft));
+  private TalonSRXController m_backRight = new TalonSRXController(new TalonSRX(Constants.MotorConstants.kDriveBackRight));
 
   //control groups
   private MotorControllerGroup m_leftDrive = new MotorControllerGroup(m_frontLeft, m_backLeft);
   private MotorControllerGroup m_rightDrive = new MotorControllerGroup(m_frontRight, m_backRight);
 
-  //drive diff
-  public DifferentialDrive m_drive = new DifferentialDrive(m_rightDrive, m_leftDrive);
+  // //drive diff
+  private DifferentialDrive m_drive = new DifferentialDrive(m_rightDrive, m_leftDrive);
 
   public DrivetrainSubsystem() {
 
     //invert right
-    m_rightDrive.setInverted(true);
+    // m_rightDrive.setInverted(true);
 
     //declare differential drive
+  }
+
+  // public CommandBase test() {
+  //   return runOnce(
+  //     () -> {
+  //       /* one-time action goes here */
+  //       System.out.print("this thing no work");
+  //     });
+  // }
+
+  public void drive(XboxController xboxController) {
+    double reducedLeftSpeed = xboxController.getLeftY()/2, reducedRightSpeed = xboxController.getRightY()/2;
+    m_drive.tankDrive(reducedLeftSpeed, reducedRightSpeed);
+    //m_frontLeft.set(reducedLeftSpeed);
+    //m_frontLeft.set(ControlMode.PercentOutput,reducedLeftSpeed);
+
   }
 
   /**
