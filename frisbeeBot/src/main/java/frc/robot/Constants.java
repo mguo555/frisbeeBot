@@ -25,5 +25,9 @@ public final class Constants {
     public static final int kDriveFrontRight = 11;
     public static final int kDriveBackLeft = 12;
     public static final int kDriveBackRight = 13;
+
+    //launch constants
+    public static final int kLaunch1 = 20;
+    public static final int kLaunch2 = 21;
   }
 }

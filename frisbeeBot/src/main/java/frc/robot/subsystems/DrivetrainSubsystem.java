@@ -33,20 +33,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private DifferentialDrive m_drive = new DifferentialDrive(m_rightDrive, m_leftDrive);
 
   public DrivetrainSubsystem() {
-
-    //invert right
-    // m_rightDrive.setInverted(true);
-
-    //declare differential drive
   }
-
-  // public CommandBase test() {
-  //   return runOnce(
-  //     () -> {
-  //       /* one-time action goes here */
-  //       System.out.print("this thing no work");
-  //     });
-  // }
 
   public void drive(XboxController xboxController) {
     double reducedLeftSpeed = xboxController.getLeftY()/2, reducedRightSpeed = xboxController.getRightY()/2;

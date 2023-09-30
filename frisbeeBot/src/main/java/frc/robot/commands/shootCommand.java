@@ -4,26 +4,23 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.DrivetrainSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.LauncherSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class DriveCommand extends CommandBase {
+public class shootCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DrivetrainSubsystem m_drivetrainSubsystem;
-  private final XboxController m_controller;
+  private final LauncherSubsystem m_subsystem;
+
   /**
-   * Creates a new DriveCommand.
+   * Creates a new shootCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveCommand(DrivetrainSubsystem drivetrainSubsystem, XboxController controller) {
-    m_drivetrainSubsystem = drivetrainSubsystem;
-    m_controller = controller;
-
+  public shootCommand(LauncherSubsystem subsystem) {
+    m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrainSubsystem);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,13 +30,14 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrainSubsystem.drive(m_controller);
-    //m_drivetrainSubsystem.m_drive.tankDrive(, 0, isFinished());
+    m_subsystem.setLaunchSpeed(0.75);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_subsystem.setLaunchSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
