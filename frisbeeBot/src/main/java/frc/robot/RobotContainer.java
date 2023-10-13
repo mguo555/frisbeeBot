@@ -9,9 +9,12 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.shootCommand;
+import frc.robot.commands.extendSolenoidCommand;
+import frc.robot.commands.retractSolenoidCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,6 +32,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final LauncherSubsystem m_launcherSubsystem = new LauncherSubsystem();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController =
@@ -36,12 +40,17 @@ public class RobotContainer {
   private final CommandXboxController m_commandController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final DriveCommand m_driveCommand = new DriveCommand(m_drivetrainSubsystem, m_driverController);
   private final shootCommand m_shootCommand = new shootCommand(m_launcherSubsystem);
+  private final extendSolenoidCommand m_extendSolenoidCommand = new extendSolenoidCommand(m_pneumaticsSubsystem);
+  private final retractSolenoidCommand m_retractSolenoidCommand = new retractSolenoidCommand(m_pneumaticsSubsystem);
+  private final ExampleCommand m_exampleCommand = new ExampleCommand(m_exampleSubsystem);
+
     
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     m_drivetrainSubsystem.setDefaultCommand(m_driveCommand);
     configureBindings();
+    m_pneumaticsSubsystem.setDefaultCommand(m_retractSolenoidCommand);
   }
 
   /**
@@ -55,6 +64,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_commandController.leftTrigger().whileTrue(m_shootCommand);
+    m_commandController.rightTrigger().toggleOnTrue(m_extendSolenoidCommand);
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     // new Trigger(m_exampleSubsystem::exampleCondition)
