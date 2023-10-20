@@ -28,11 +28,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   //control groups
   private MotorControllerGroup m_leftDrive = new MotorControllerGroup(m_frontLeft, m_backLeft);
   private MotorControllerGroup m_rightDrive = new MotorControllerGroup(m_frontRight, m_backRight);
-
   // //drive diff
   private DifferentialDrive m_drive = new DifferentialDrive(m_rightDrive, m_leftDrive);
 
   public DrivetrainSubsystem() {
+    m_leftDrive.setInverted(true);
   }
 
   public void drive(XboxController xboxController) {
